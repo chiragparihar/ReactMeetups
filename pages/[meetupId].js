@@ -1,9 +1,17 @@
 import MeetupDetail from "../components/meetups/MeetupDetail";
 import { MongoClient,ObjectId } from "mongodb";
-
+import Head from 'next/head'
 function MeetupDetails(props){
     
-    return <MeetupDetail title = {props.DATA.title} image ={props.DATA.image} address ={props.DATA.address} description ={props.DATA.description} ></MeetupDetail>
+    return (
+        <>
+        <Head>
+            <title>{props.DATA.title}</title>
+            <meta name='description' content={props.DATA.description}></meta>
+        </Head>
+        <MeetupDetail title = {props.DATA.title} image ={props.DATA.image} address ={props.DATA.address} description ={props.DATA.description} ></MeetupDetail>
+        </>
+    )
 }
 export async function getStaticPaths(){
     const usrName = process.env.MONGOUSR
@@ -29,8 +37,6 @@ export async function getStaticProps(context){
     const meetupCollections = db.collection('meetups');
     const meetup = await meetupCollections.findOne({_id: ObjectId(id)})
     client.close();
-    
-    console.log(id);
     return {
         props:{
             DATA:{
